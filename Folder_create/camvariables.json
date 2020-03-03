@@ -1,0 +1,47 @@
+{
+  "input_datatypes": [ ],
+  "input_namespaces": [ ],
+  "output_namespace": "",
+  "input_groups": [  { "name": "Other", "label": "Other" } ],
+  "output_groups": [ ],
+  "template_input_params": [
+    {
+      "name": "path",
+      "label": "Path",
+      "description": null,
+      "type": "string",
+      "default": "",
+      "validation": "",
+      "group_name": "Other",
+      "required": true,
+      "secured": false,
+      "hidden": false,
+      "immutable": false,
+      "immutable_after_create": false
+    },
+    {
+      "name": "datacenter_id",
+      "label": "Datacenter Id",
+      "description": null,
+      "type": "string",
+      "default": "",
+      "validation": "",
+      "group_name": "Other",
+      "required": true,
+      "secured": false,
+      "hidden": false,
+      "immutable": false,
+      "immutable_after_create": false
+    }
+  ],
+  "template_output_params": [  {
+    "name": "path",
+    "label": "Path",
+    "description": null,
+    "group_name": "",
+    "secured": false,
+    "hidden": false,
+    "shortname": "",
+    "type": "string"
+  } ]
+}

@@ -1,0 +1,55 @@
+{
+  "input_datatypes": [ ],
+  "input_namespaces": [ ],
+  "output_namespace": "",
+  "input_groups": [  {
+    "name": "Instances-vsphere_virtual_machine.vm",
+    "label": "Instances - vsphere_virtual_machine.vm"
+  } ],
+  "output_groups": [ ],
+  "template_input_params": [
+    {
+      "name": "vm_name",
+      "label": "vm_name",
+      "description": "Name of Virtual machine for ShowMe",
+      "type": "string",
+      "default": "",
+      "validation": "",
+      "group_name": "Instances-vsphere_virtual_machine.vm",
+      "required": true,
+      "secured": false,
+      "hidden": false,
+      "immutable": false,
+      "immutable_after_create": false
+    },
+    {
+      "name": "num_cpus",
+      "label": "num_cpus",
+      "description": "Number of CPU's for Virtual machine for ShowMe",
+      "type": "string",
+      "default": "",
+      "validation": "",
+      "group_name": "Instances-vsphere_virtual_machine.vm",
+      "required": true,
+      "secured": false,
+      "hidden": false,
+      "immutable": false,
+      "immutable_after_create": false
+    },
+    {
+      "name": "memory",
+      "label": "memory",
+      "description": "Amount of Memory for Virtual machine in MB for ShowMe",
+      "type": "string",
+      "default": "",
+      "validation": "",
+      "group_name": "Instances-vsphere_virtual_machine.vm",
+      "required": true,
+      "secured": false,
+      "hidden": false,
+      "immutable": false,
+      "immutable_after_create": false
+    }
+  ],
+  "template_output_params": [ ]
+}
