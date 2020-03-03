@@ -6,11 +6,11 @@
   "output_groups": [ ],
   "template_input_params": [
     {
-      "name": "path",
-      "label": "Path",
-      "description": null,
+      "name": "datacenter_id",
+      "label": "Datacenter Id",
+      "description": "Name of Datacenter for ShowMe",
       "type": "string",
-      "default": "",
+      "default": "HDK1",
       "validation": "",
       "group_name": "Other",
       "required": true,
@@ -20,9 +20,9 @@
       "immutable_after_create": false
     },
     {
-      "name": "datacenter_id",
-      "label": "Datacenter Id",
-      "description": null,
+      "name": "path",
+      "label": "Path",
+      "description": "Folder Path for ShowMe",
       "type": "string",
       "default": "",
       "validation": "",
@@ -37,7 +37,7 @@
   "template_output_params": [  {
     "name": "path",
     "label": "Path",
-    "description": null,
+    "description": "null",
     "group_name": "",
     "secured": false,
     "hidden": false,

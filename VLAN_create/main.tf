@@ -13,7 +13,7 @@ provider "vsphere" {
 }
 
 data "vsphere_datacenter" "dc" {
-  name = "HDK1"
+  name = "${var.datacenter}"
 }
 
 data "vsphere_distributed_virtual_switch" "dvs" {

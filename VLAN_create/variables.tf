@@ -4,17 +4,22 @@
 ##
 #####################################################################
 
+variable "datacenter" {
+  type = "string"
+  description = "Name of Datacenter for ShowMe"
+}
+
 variable "dvs" {
-  default = 
-    "dvS VM Network"
+  type = "string"
+  description = "Name of distributed virtual switch for ShowMe"
 }
 
 variable "vdpg" {
-  default = 
-    "dvP VM Network 99"
+  type = "string"
+  description = "Name of Virtual Distributed Port Group for ShowMe"
 }
 
 variable "vlanid" {
-  default = 
-    "99"
+  type = "string"
+  description = "VLAN ID for ShowMe"
 }

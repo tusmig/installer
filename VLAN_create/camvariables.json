@@ -6,9 +6,23 @@
   "output_groups": [ ],
   "template_input_params": [
     {
+      "name": "datacenter",
+      "label": "Datacenter",
+      "description": "Name of Datacenter for ShowMe",
+      "type": "string",
+      "default": "HDK1",
+      "validation": "",
+      "group_name": "",
+      "required": true,
+      "secured": false,
+      "hidden": false,
+      "immutable": false,
+      "immutable_after_create": false
+    },
+    {
       "name": "dvs",
       "label": "Dvs",
-      "description": "null",
+      "description": "Name of distributed virtual switch for ShowMe",
       "type": "string",
       "default": "dvS VM Network",
       "validation": "",
@@ -22,7 +36,7 @@
     {
       "name": "vdpg",
       "label": "Vdpg",
-      "description": "null",
+      "description": "Name of Virtual Distributed Port Group for ShowMe",
       "type": "string",
       "default": "dvP VM Network 99",
       "validation": "",
@@ -36,7 +50,7 @@
     {
       "name": "vlanid",
       "label": "Vlanid",
-      "description": "null",
+      "description": "VLAN ID for ShowMe",
       "type": "string",
       "default": "99",
       "validation": "",
