@@ -6,13 +6,13 @@
   "output_groups": [ ],
   "template_input_params": [
     {
-      "name": "datacenter_id",
-      "label": "Datacenter Id",
+      "name": "datacenter",
+      "label": "Datacenter",
       "description": "Name of Datacenter for ShowMe",
       "type": "string",
-      "default": "HDK1",
+      "default": "",
       "validation": "",
-      "group_name": "Other",
+      "group_name": "",
       "required": true,
       "secured": false,
       "hidden": false,
@@ -22,7 +22,7 @@
     {
       "name": "path",
       "label": "Path",
-      "description": "Folder Path for ShowMe",
+      "description": "Folder Path for ShowMe; usage: /folder/subfolder",
       "type": "string",
       "default": "",
       "validation": "",
