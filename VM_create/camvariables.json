@@ -122,7 +122,7 @@
     },
     {
       "name": "vm_memory",
-      "label": "Vm Memory",
+      "label": "Vm Memory [MB]",
       "description": "Amount of Memory (MB) for Virtual machine for ShowMe",
       "type": "string",
       "default": "",
@@ -136,7 +136,7 @@
     },
     {
       "name": "vm_disk_size",
-      "label": "Vm Disk Size",
+      "label": "Vm Disk Size [GB]",
       "description": "Disk size (GB) for Virtual machine for ShowMe",
       "type": "string",
       "default": "50",

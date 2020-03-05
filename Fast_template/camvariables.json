@@ -38,7 +38,7 @@
     },
     {
       "name": "memory",
-      "label": "memory",
+      "label": "memory [MB]",
       "description": "Amount of Memory for Virtual machine in MB for ShowMe",
       "type": "string",
       "default": "",
