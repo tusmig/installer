@@ -34,7 +34,7 @@ data "vsphere_datastore" "datastore" {
 }
 
 data "vsphere_resource_pool" "pool" {
-  name          = "ShowMe/Resources"
+  name          = "X7500-ESXi6/Resources"
   datacenter_id = "${data.vsphere_datacenter.dc.id}"
 }
 
