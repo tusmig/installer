@@ -65,7 +65,23 @@ variable "guest_id" {
   type = "string"
   description = "Guest OS id for Virtual machine for ShowMe"
 }
+
 variable "template_uuid" {
   type = "string"
   description = "Template uuid for Virtual machine for ShowMe"
+}
+
+variable "ip_gateway" {
+  type = "string"
+  description = "ipv4 gateway"
+}
+
+variable "ip_netmask" {
+  type = "string"
+  description = "ipv4 netmask"
+}
+
+variable "ip_address" {
+  type = "string"
+  description = "ipv4 ip address"
 }

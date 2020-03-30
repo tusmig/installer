@@ -55,7 +55,12 @@ resource "vsphere_virtual_machine" "vm" {
             domain = "${var.domain}"
            } 
 
-    network_interface {}
+      network_interface {
+        ipv4_address = "${var.ip_address}"
+        ipv4_netmask = "${var.ip_netmask}"
+      }
+
+      ipv4_gateway = "${var.ip_gateway}"
+    }
   }
  }
-} 

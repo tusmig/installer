@@ -189,6 +189,48 @@
       "hidden": true,
       "immutable": false,
       "immutable_after_create": false
+    },
+    {
+      "name": "ip_gateway",
+      "label": "Ip Gateway",
+      "description": "ipv4 gateway",
+      "type": "string",
+      "default": "",
+      "validation": "",
+      "group_name": "",
+      "required": true,
+      "secured": false,
+      "hidden": false,
+      "immutable": false,
+      "immutable_after_create": false
+    },
+    {
+      "name": "ip_netmask",
+      "label": "Ip Netmask",
+      "description": "ipv4 netmask",
+      "type": "string",
+      "default": "",
+      "validation": "",
+      "group_name": "",
+      "required": true,
+      "secured": false,
+      "hidden": false,
+      "immutable": false,
+      "immutable_after_create": false
+    },
+    {
+      "name": "ip_address",
+      "label": "Ip Address",
+      "description": "ipv4 ip address",
+      "type": "string",
+      "default": "",
+      "validation": "",
+      "group_name": "",
+      "required": true,
+      "secured": false,
+      "hidden": false,
+      "immutable": false,
+      "immutable_after_create": false
     }
   ],
   "template_output_params": [ ]
