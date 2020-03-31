@@ -34,6 +34,41 @@ resource "vsphere_virtual_machine" "vm" {
   datastore_id     = "${data.vsphere_datastore.datastore.id}"
   folder           = "${var.vm_vsphere_folder}"
 
+provisioner "remote-exec" {
+    connection = {
+      type     = "winrm"
+      host     = "${var.dns_server}"
+      user     = "${var.dns_userid}"
+      password = "${var.dns_password}"
+      agent    = "false"
+      insecure = "${var.winrm_insecure}" 
+      https    = "${var.winrm_https}"
+      port     = "${var.winrm_port}"
+      use_ntlm = "${var.winrm_use_ntlm}"
+    }
+
+    inline = [
+      "powershell -Command \"&{Add-DnsServerResourceRecordA -Name ${var.vm_name} -ZoneName ${var.domain} -IPv4Address ${var.ip_address} -ComputerName ${var.dns_server}}\"",
+    ]
+  }
+  provisioner "remote-exec" {
+    when       = "destroy"
+    connection = {
+      type     = "winrm"
+      host     = "${var.dns_server}"
+      user     = "${var.dns_userid}"
+      password = "${var.dns_password}"
+      agent    = "false"
+      insecure = "${var.winrm_insecure}" 
+      https    = "${var.winrm_https}"
+      port     = "${var.winrm_port}"
+      use_ntlm = "${var.winrm_use_ntlm}"
+    }
+
+    inline = [
+      "powershell -Command \"&{Remove-DNSServerResourceRecord -Name ${var.vm_name} -ZoneName ${var.domain} -RRType A -Confirm:$false -Force -ComputerName ${var.dns_server}}\"",
+    ]
+  }
 
   num_cpus = "${var.vm_num_cpus}"
   memory   = "${var.vm_memory}"

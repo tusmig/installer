@@ -3,6 +3,34 @@
 ##      Created 3/2/20 by admin. for Create_VM
 ##
 #####################################################################
+#variables for DNS entry
+variable "dns_userid" {
+  type = "string"
+}
+
+variable "dns_password" {
+  type = "string"
+}
+
+variable "dns_server" {
+  type = "string"
+}
+
+variable "winrm_use_ntlm" {
+  type = "string"
+}
+
+variable "winrm_insecure" {
+  type = "string"
+}
+
+variable "winrm_https" {
+  type = "string"
+}
+
+variable "winrm_port" {
+  type = "string"
+}
 
 # variables for vsphere
 variable "datacenter" {
