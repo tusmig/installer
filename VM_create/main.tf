@@ -28,13 +28,29 @@ data "vsphere_network" "network" {
   datacenter_id = "${data.vsphere_datacenter.dc.id}"
 }
 
+resource "null_resource" "unsubscribe_rh" {
+  provisioner "remote-exec" {
+    when        = "destroy"
+    connection  = {
+      type      = "ssh"
+      host      = "${var.ip_address}"
+      user      = "${var.vmrh_os_user}"
+      password  = "${var.vmrh_os_password}"
+    }
+
+    inline = [
+      "subscription-manager unregister",
+    ]    
+  }
+}
+  
 resource "vsphere_virtual_machine" "vm" {
   name             = "${var.vm_name}"
   resource_pool_id = "${data.vsphere_resource_pool.pool.id}"
   datastore_id     = "${data.vsphere_datastore.datastore.id}"
   folder           = "${var.vm_vsphere_folder}"
 
-provisioner "remote-exec" {
+  provisioner "remote-exec" {
     connection = {
       type     = "winrm"
       host     = "${var.dns_server}"
@@ -98,4 +114,19 @@ provisioner "remote-exec" {
       ipv4_gateway = "${var.ip_gateway}"
     }
   }
- }
+ 
+  provisioner "remote-exec" {
+    connection  = {
+      type      = "ssh"
+      host      = "${var.ip_address}"
+      user      = "${var.vmrh_os_user}"
+      password  = "${var.vmrh_os_password}"
+    }
+
+    inline = [
+      "subscription-manager register --org=${var.subscript_org} --activationkey=${var.subscript_actkey}",
+    ]    
+  }
+
+}
+ 

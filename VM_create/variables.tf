@@ -113,3 +113,19 @@ variable "ip_address" {
   type = "string"
   description = "ipv4 ip address"
 }
+
+variable "subscript_org" {
+  type = "string"
+}
+
+variable "subscript_actkey" {
+  type = "string"
+}
+
+variable "vmrh_os_user" {
+  type = "string"
+}
+
+variable "vmrh_os_password" {
+  type = "string"
+}
