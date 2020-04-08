@@ -129,3 +129,7 @@ variable "vmrh_os_user" {
 variable "vmrh_os_password" {
   type = "string"
 }
+
+variable "dns_server_ip" {
+  type = "string"
+}

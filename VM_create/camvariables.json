@@ -1,18 +1,8 @@
 {
-  "input_datatypes": [  
-  {
+  "input_datatypes": [  {
     "name": "winrm_connection_settings",
     "label": "WinRM connection values"
-  }, 
-  {
-    "name": "rhel78_os_credentials",
-    "label": "OS Credentials for RHEL_7.8 template in VMware"
-  },
-  {
-    "name": "rhsm_activationkey",
-    "label": "Red Hat Subscription Manager Registration Activation Key"
-  }
-  ],
+  } ],
   "input_namespaces": [ ],
   "output_namespace": "",
   "input_groups": [  {
@@ -406,6 +396,20 @@
       "group_name": "",
       "required": true,
       "secured": true,
+      "hidden": false,
+      "immutable": false,
+      "immutable_after_create": false
+    },
+    {
+      "name": "dns_server_ip",
+      "label": "Dns Server Ip",
+      "description": null,
+      "type": "string",
+      "default": "10.10.80.38",
+      "validation": "",
+      "group_name": "",
+      "required": true,
+      "secured": false,
       "hidden": false,
       "immutable": false,
       "immutable_after_create": false
