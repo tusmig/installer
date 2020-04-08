@@ -1,8 +1,14 @@
 {
-  "input_datatypes": [  {
+  "input_datatypes": [  
+  {
     "name": "winrm_connection_settings",
     "label": "WinRM connection values"
-  } ],
+  }, 
+  {
+    "name": "rhel78_os_credentials",
+    "label": "OS Credentials for RHEL_7.8 template in VMware"
+  } 
+  ],
   "input_namespaces": [ ],
   "output_namespace": "",
   "input_groups": [  {
