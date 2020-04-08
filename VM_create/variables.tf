@@ -94,9 +94,9 @@ variable "guest_id" {
   description = "Guest OS id for Virtual machine for ShowMe"
 }
 
-variable "template_uuid" {
+variable "template_name" {
   type = "string"
-  description = "Template uuid for Virtual machine for ShowMe"
+  description = "Template name for Virtual machine for ShowMe"
 }
 
 variable "ip_gateway" {

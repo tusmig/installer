@@ -28,6 +28,11 @@ data "vsphere_network" "network" {
   datacenter_id = "${data.vsphere_datacenter.dc.id}"
 }
 
+data "vsphere_virtual_machine" "template" {
+  name          = "${var.template_name}"
+  datacenter_id = "${data.vsphere_datacenter.dc.id}"
+}
+
 resource "null_resource" "unsubscribe_rh" {
   provisioner "remote-exec" {
     when        = "destroy"
@@ -98,8 +103,9 @@ resource "vsphere_virtual_machine" "vm" {
     label = "${var.vm_disk_label}"
     size  = "${var.vm_disk_size}"
   }
+  
   clone {
-    template_uuid = "${var.template_uuid}"
+    template_uuid = "${data.vsphere_virtual_machine.template.id}"
      customize {
        linux_options {
             host_name = "${var.vm_name}"
