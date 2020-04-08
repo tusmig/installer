@@ -110,15 +110,15 @@ resource "vsphere_virtual_machine" "vm" {
        linux_options {
             host_name = "${var.vm_name}"
             domain = "${var.domain}"
-           } 
+       } 
 
       network_interface {
         ipv4_address = "${var.ip_address}"
         ipv4_netmask = "${var.ip_netmask}"
-        dns_server_list = ["${var.dns_server_ip}"]
       }
 
       ipv4_gateway = "${var.ip_gateway}"
+      dns_server_list = ["${var.dns_server_ip}"]
     }
   }
  
