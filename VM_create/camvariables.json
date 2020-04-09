@@ -7,6 +7,10 @@
   {
     "name": "rhsm_activationkey",
     "label": "Red Hat Subscription Manager Registration Activation Key"
+  },
+  {
+    "name": "rhel78_os_credentials",
+    "label": "Rhel_7.8 OS Credentials VMware"
   }
   ],
   "input_namespaces": [ ],
