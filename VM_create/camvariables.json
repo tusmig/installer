@@ -1,8 +1,14 @@
 {
-  "input_datatypes": [  {
+  "input_datatypes": [  
+  {
     "name": "winrm_connection_settings",
     "label": "WinRM connection values"
-  } ],
+  }, 
+  {
+    "name": "rhsm_activationkey",
+    "label": "Red Hat Subscription Manager Registration Activation Key"
+  }
+  ],
   "input_namespaces": [ ],
   "output_namespace": "",
   "input_groups": [  {
