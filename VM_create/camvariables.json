@@ -303,7 +303,7 @@
       "label": "Template Name",
       "description": "Template name for Virtual machine for ShowMe",
       "type": "string",
-      "default": "RHE_7.8",
+      "default": "RHE_7.8_new",
       "validation": "",
       "group_name": "",
       "required": true,
