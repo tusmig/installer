@@ -131,9 +131,6 @@ resource "vsphere_virtual_machine" "vm" {
       dns_server_list = ["${var.dns_server_ip}"]
     }
   }
-}  
-
-resource "null_resource" "vm" {
   provisioner "remote-exec" {
     connection  = {
       type      = "ssh"
@@ -146,6 +143,58 @@ resource "null_resource" "vm" {
       "subscription-manager register --org=${var.subscript_org} --activationkey=${var.subscript_actkey}",
     ]    
   }
+   
+  provisioner "file" {
+    connection  = {
+      type      = "ssh"
+      host      = "${vsphere_virtual_machine.vm.default_ip_address}"
+      user      = "${var.vmrh_os_user}"
+      password  = "${var.vmrh_os_password}"
+    }
+
+    destination = "add_static_routes.sh"
+    content = <<EOF
+# =================================================================
+# Copyright 2020 IBM Corporation
+# Created by Mano & Jacqueline
+# =================================================================
+#!/bin/bash
+
+if (( $# != 2 )); then
+echo "usage: arg 1 is vm network"
+exit -1
+fi
+
+#Add route file for interface ens224 and restart network
+
+network='$1'
+vpc=`echo -n $network | tail -c 2`
+
+routefile="/etc/sysconfig/network-scripts/route-ens224"
+echo "10.10.70.0/24 via 10.1.$vpc.254" > $routefile
+echo "10.1.$vpc.0/24 via 10.1.$vpc.254" >> $routefile
+echo "10.2.$vpc.0/24 via 10.1.$vpc.254" >> $routefile
+echo "10.3.$vpc.0/24 via 10.1.$vpc.254" >> $routefile
+cat $routefile
+
+systemctl restart network
+
+EOF
+  }
+    provisioner "remote-exec" {
+    connection  = {
+      type      = "ssh"
+      host      = "${vsphere_virtual_machine.vm.default_ip_address}"
+      user      = "${var.vmrh_os_user}"
+      password  = "${var.vmrh_os_password}"
+    }
+
+    inline = [
+      "chmod +x add_static_routes.sh",
+      "add_static_routes.sh \"${var.network}\"",
+    ]    
+  }
 }
+
 
  
