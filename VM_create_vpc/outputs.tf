@@ -5,7 +5,7 @@
 #####################################################################
 
 output "mgmt_interface_ip" {
-    value = "${vsphere_virtual_machine.vm.network_interface.1.ipv4_address}"
+    value = "${vsphere_virtual_machine.vm.*.clone.0.customize.0.network_interface.1.ipv4_address}"
 }
 
 output "vm_tier_interface_ip" {
