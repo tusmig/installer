@@ -101,11 +101,11 @@ resource "vsphere_virtual_machine" "vm" {
   guest_id = "${var.guest_id}"
 
   network_interface {
-    network_id = "${data.vsphere_network.network.id}"
+    network_id = "${data.vsphere_network.beheer.id}"
   }
 
   network_interface {
-    network_id = "${data.vsphere_network.beheer.id}"
+    network_id = "${data.vsphere_network.network.id}"
   }
   
   disk {
