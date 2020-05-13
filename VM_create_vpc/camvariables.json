@@ -425,5 +425,26 @@
       "immutable_after_create": false
     }
   ],
-  "template_output_params": [ ]
+  "template_output_params": [
+    {
+      "name": "mgmt_interface_ip",
+      "label": "Mgmt Interface Ip",
+      "description": null,
+      "group_name": "",
+      "secured": false,
+      "hidden": false,
+      "shortname": "",
+      "type": "string"
+    },
+    {
+      "name": "vm_tier_interface_ip",
+      "label": "Vm Tier Interface Ip",
+      "description": null,
+      "group_name": "",
+      "secured": false,
+      "hidden": false,
+      "shortname": "",
+      "type": "string"
+    }
+  ]
 }

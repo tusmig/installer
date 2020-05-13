@@ -135,7 +135,7 @@ resource "vsphere_virtual_machine" "vm" {
   provisioner "remote-exec" {
     connection  = {
       type      = "ssh"
-      host      = "${var.ip_address}"
+      host      = "${vsphere_virtual_machine.vm.network_interface.1.ipv4_address}"
       user      = "${var.vmrh_os_user}"
       password  = "${var.vmrh_os_password}"
     }
