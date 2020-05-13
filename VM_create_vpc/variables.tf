@@ -104,11 +104,6 @@ variable "template_name" {
   description = "Template name for Virtual machine for ShowMe"
 }
 
-variable "ip_gateway" {
-  type = "string"
-  description = "ipv4 gateway"
-}
-
 variable "ip_netmask" {
   type = "string"
   description = "ipv4 netmask"
