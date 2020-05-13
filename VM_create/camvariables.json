@@ -175,7 +175,7 @@
     {
       "name": "network",
       "label": "VM Network",
-      "description": "Name of network for ShowMe",
+      "description": "Name of client network for ShowMe",
       "type": "string",
       "default": "",
       "validation": "",

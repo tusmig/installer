@@ -50,7 +50,7 @@ variable "resource_pool" {
 
 variable "network" {
   type = "string"
-  description = "Name of network for ShowMe"
+  description = "Name of client network for ShowMe"
 }
 
 variable "beheer_network" {
