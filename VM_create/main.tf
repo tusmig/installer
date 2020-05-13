@@ -28,6 +28,11 @@ data "vsphere_network" "network" {
   datacenter_id = "${data.vsphere_datacenter.dc.id}"
 }
 
+data "vsphere_network" "beheer" {
+  name          = "${var.beheer_network}"
+  datacenter_id = "${data.vsphere_datacenter.dc.id}"
+}
+
 data "vsphere_virtual_machine" "template" {
   name          = "${var.template_name}"
   datacenter_id = "${data.vsphere_datacenter.dc.id}"
@@ -96,6 +101,10 @@ resource "vsphere_virtual_machine" "vm" {
   guest_id = "${var.guest_id}"
 
   network_interface {
+    network_id = "${data.vsphere_network.beheer.id}"
+  }
+  
+  network_interface {
     network_id = "${data.vsphere_network.network.id}"
   }
 
@@ -111,17 +120,20 @@ resource "vsphere_virtual_machine" "vm" {
             host_name = "${var.vm_name}"
             domain = "${var.domain}"
        } 
+    
+      network_interface {}
 
       network_interface {
         ipv4_address = "${var.ip_address}"
         ipv4_netmask = "${var.ip_netmask}"
       }
 
-      ipv4_gateway = "${var.ip_gateway}"
       dns_server_list = ["${var.dns_server_ip}"]
     }
   }
- 
+}
+
+resource "null_resource" "vm" { 
   provisioner "remote-exec" {
     connection  = {
       type      = "ssh"
@@ -134,6 +146,5 @@ resource "vsphere_virtual_machine" "vm" {
       "subscription-manager register --org=${var.subscript_org} --activationkey=${var.subscript_actkey}",
     ]    
   }
-
 }
  

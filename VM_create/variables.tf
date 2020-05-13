@@ -53,6 +53,11 @@ variable "network" {
   description = "Name of network for ShowMe"
 }
 
+variable "beheer_network" {
+  type = "string"
+  description = "Name of management network for ShowMe"
+}
+
 variable "domain" {
   type = "string"
   description = "Name of domain for ShowMe"
@@ -97,11 +102,6 @@ variable "guest_id" {
 variable "template_name" {
   type = "string"
   description = "Template name for Virtual machine for ShowMe"
-}
-
-variable "ip_gateway" {
-  type = "string"
-  description = "ipv4 gateway"
 }
 
 variable "ip_netmask" {
