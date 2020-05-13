@@ -120,13 +120,13 @@ resource "vsphere_virtual_machine" "vm" {
             host_name = "${var.vm_name}"
             domain = "${var.domain}"
        } 
-
+    
+      network_interface {}
+      
       network_interface {
         ipv4_address = "${var.ip_address}"
         ipv4_netmask = "${var.ip_netmask}"
       }
-    
-      network_interface {}
 
       dns_server_list = ["${var.dns_server_ip}"]
     }
@@ -137,7 +137,7 @@ resource "null_resource" "vm" {
   provisioner "remote-exec" {
     connection  = {
       type      = "ssh"
-      host      = "${vsphere_virtual_machine.vm.*.clone.0.customize.0.network_interface.1.ipv4_address}"
+      host      = "${vsphere_virtual_machine.vm.default_ip_address}"
       user      = "${var.vmrh_os_user}"
       password  = "${var.vmrh_os_password}"
     }
