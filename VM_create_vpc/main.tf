@@ -131,7 +131,9 @@ resource "vsphere_virtual_machine" "vm" {
       dns_server_list = ["${var.dns_server_ip}"]
     }
   }
- 
+}  
+
+resource "null_resource" "vm" {
   provisioner "remote-exec" {
     connection  = {
       type      = "ssh"
@@ -144,6 +146,6 @@ resource "vsphere_virtual_machine" "vm" {
       "subscription-manager register --org=${var.subscript_org} --activationkey=${var.subscript_actkey}",
     ]    
   }
-
 }
+
  
