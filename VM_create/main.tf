@@ -103,11 +103,11 @@ resource "vsphere_virtual_machine" "vm" {
   network_interface {
     network_id = "${data.vsphere_network.beheer.id}"
   }
-  
+
   network_interface {
     network_id = "${data.vsphere_network.network.id}"
   }
-
+  
   disk {
     label = "${var.vm_disk_label}"
     size  = "${var.vm_disk_size}"
@@ -122,7 +122,7 @@ resource "vsphere_virtual_machine" "vm" {
        } 
     
       network_interface {}
-
+      
       network_interface {
         ipv4_address = "${var.ip_address}"
         ipv4_netmask = "${var.ip_netmask}"
@@ -131,13 +131,13 @@ resource "vsphere_virtual_machine" "vm" {
       dns_server_list = ["${var.dns_server_ip}"]
     }
   }
-}
+}  
 
-resource "null_resource" "vm" { 
+resource "null_resource" "vm" {
   provisioner "remote-exec" {
     connection  = {
       type      = "ssh"
-      host      = "${var.ip_address}"
+      host      = "${vsphere_virtual_machine.vm.default_ip_address}"
       user      = "${var.vmrh_os_user}"
       password  = "${var.vmrh_os_password}"
     }
@@ -147,4 +147,3 @@ resource "null_resource" "vm" {
     ]    
   }
 }
- 
