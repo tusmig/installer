@@ -43,7 +43,7 @@ resource "null_resource" "unsubscribe_rh" {
     when        = "destroy"
     connection  = {
       type      = "ssh"
-      host      = "${var.ip_address}"
+      host      = "${vsphere_virtual_machine.vm.default_ip_address}"
       user      = "${var.vmrh_os_user}"
       password  = "${var.vmrh_os_password}"
     }
