@@ -43,7 +43,7 @@ resource "null_resource" "unsubscribe_rh" {
     when        = "destroy"
     connection  = {
       type      = "ssh"
-      host      = "${var.ip_address}"
+      host      = "${vsphere_virtual_machine.vm.default_ip_address}"
       user      = "${var.vmrh_os_user}"
       password  = "${var.vmrh_os_password}"
     }
@@ -144,7 +144,7 @@ resource "vsphere_virtual_machine" "vm" {
     ]    
   }
    
-  provisioner "file" {
+   provisioner "file" {
     connection  = {
       type      = "ssh"
       host      = "${vsphere_virtual_machine.vm.default_ip_address}"
@@ -180,19 +180,27 @@ cat $routefile
 systemctl restart network
 
 EOF
-  }
-    provisioner "remote-exec" {
-    connection  = {
+ }
+}
+
+resource "null_resource" "add_static_routes" {
+  depends_on = ["vsphere_virtual_machine.vm"]
+
+  # Specify the connection
+  connection {
       type      = "ssh"
       host      = "${vsphere_virtual_machine.vm.default_ip_address}"
       user      = "${var.vmrh_os_user}"
-      password  = "${var.vmrh_os_password}"
-    }
-
+      password  = "${var.vmrh_os_password}"       
+  }
+  
+  # Execute the script remotely
+  provisioner "remote-exec" {
     inline = [
-      "chmod +x add_static_routes.sh",
-      "add_static_routes.sh \"${var.network}\"",
-    ]    
+      "set -e",
+      "bash -c 'chmod +x add_static_routes.sh'",
+      "bash -c './add_static_routes.sh  \"${var.network}\" >> VM_add_static_routes.log 2>&1'",
+    ]
   }
 }
 
