@@ -28,6 +28,11 @@ data "vsphere_network" "network" {
   datacenter_id = "${data.vsphere_datacenter.dc.id}"
 }
 
+data "vsphere_network" "beheer" {
+  name          = "${var.beheer_network}"
+  datacenter_id = "${data.vsphere_datacenter.dc.id}"
+}
+
 data "vsphere_virtual_machine" "template" {
   name          = "${var.template_name}"
   datacenter_id = "${data.vsphere_datacenter.dc.id}"
@@ -99,6 +104,10 @@ resource "vsphere_virtual_machine" "vm" {
     network_id = "${data.vsphere_network.network.id}"
   }
 
+  network_interface {
+    network_id = "${data.vsphere_network.beheer.id}"
+  }
+  
   disk {
     label = "${var.vm_disk_label}"
     size  = "${var.vm_disk_size}"

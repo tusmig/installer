@@ -53,6 +53,11 @@ variable "network" {
   description = "Name of network for ShowMe"
 }
 
+variable "beheer_network" {
+  type = "string"
+  description = "Name of management network for ShowMe"
+}
+
 variable "domain" {
   type = "string"
   description = "Name of domain for ShowMe"

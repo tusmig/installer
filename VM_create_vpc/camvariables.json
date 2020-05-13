@@ -1,17 +1,17 @@
 {
-  "input_datatypes": [  
-  {
-    "name": "winrm_connection_settings",
-    "label": "WinRM connection values"
-  }, 
-  {
-    "name": "rhsm_activationkey",
-    "label": "Red Hat Subscription Manager Registration Activation Key"
-  },
-  {
-    "name": "rhel78_os_credentials",
-    "label": "Rhel_7.8 OS Credentials VMware"
-  }
+  "input_datatypes": [
+    {
+      "name": "winrm_connection_settings",
+      "label": "WinRM connection values"
+    },
+    {
+      "name": "rhsm_activationkey",
+      "label": "Red Hat Subscription Manager Registration Activation Key"
+    },
+    {
+      "name": "rhel78_os_credentials",
+      "label": "Rhel_7.8 OS Credentials VMware"
+    }
   ],
   "input_namespaces": [ ],
   "output_namespace": "",
@@ -177,9 +177,23 @@
       "label": "VM Network",
       "description": "Name of network for ShowMe",
       "type": "string",
-      "default": null,
+      "default": "null",
       "validation": "",
       "group_name": "Instances-vsphere_virtual_machine.vm",
+      "required": true,
+      "secured": false,
+      "hidden": false,
+      "immutable": false,
+      "immutable_after_create": false
+    },
+    {
+      "name": "beheer_network",
+      "label": "Beheer Network",
+      "description": "Name of management network for ShowMe",
+      "type": "string",
+      "default": "",
+      "validation": "",
+      "group_name": "",
       "required": true,
       "secured": false,
       "hidden": false,
@@ -205,7 +219,7 @@
       "label": "VM Name",
       "description": "Name of Virtual machine for ShowMe",
       "type": "string",
-      "default": null,
+      "default": "null",
       "validation": "",
       "group_name": "Instances-vsphere_virtual_machine.vm",
       "required": true,
@@ -219,7 +233,7 @@
       "label": "VM Number of CPU",
       "description": "Number of CPU's for Virtual machine for ShowMe",
       "type": "string",
-      "default": null,
+      "default": "null",
       "validation": "",
       "group_name": "Instances-vsphere_virtual_machine.vm",
       "required": true,
@@ -247,7 +261,7 @@
       "label": "Vm Memory [MB]",
       "description": "Amount of Memory (MB) for Virtual machine for ShowMe",
       "type": "string",
-      "default": null,
+      "default": "null",
       "validation": "",
       "group_name": "Instances-vsphere_virtual_machine.vm",
       "required": true,
@@ -317,7 +331,7 @@
       "label": "Ip Gateway",
       "description": "ipv4 gateway",
       "type": "string",
-      "default": null,
+      "default": "null",
       "validation": "",
       "group_name": "Instances-vsphere_virtual_machine.vm",
       "required": true,
@@ -345,7 +359,7 @@
       "label": "Ip Address",
       "description": "ipv4 ip address",
       "type": "string",
-      "default": null,
+      "default": "null",
       "validation": "",
       "group_name": "Instances-vsphere_virtual_machine.vm",
       "required": true,
@@ -357,7 +371,7 @@
     {
       "name": "subscript_org",
       "label": "Subscript Org",
-      "description": null,
+      "description": "null",
       "type": "string",
       "default": "${rhsm_activationkey.subscript_org}",
       "validation": "",
@@ -371,7 +385,7 @@
     {
       "name": "subscript_actkey",
       "label": "Subscript Actkey",
-      "description": null,
+      "description": "null",
       "type": "string",
       "default": "${rhsm_activationkey.subscript_actkey}",
       "validation": "",
@@ -385,7 +399,7 @@
     {
       "name": "vmrh_os_user",
       "label": "Vmrh Os User",
-      "description": null,
+      "description": "null",
       "type": "string",
       "default": "${rhel78_os_credentials.vmrh_os_user}",
       "validation": "",
@@ -399,7 +413,7 @@
     {
       "name": "vmrh_os_password",
       "label": "Vmrh Os Password",
-      "description": null,
+      "description": "null",
       "type": "string",
       "default": "${rhel78_os_credentials.vmrh_os_password}",
       "validation": "",
@@ -413,7 +427,7 @@
     {
       "name": "dns_server_ip",
       "label": "Dns Server Ip",
-      "description": null,
+      "description": "null",
       "type": "string",
       "default": "10.10.80.38",
       "validation": "",
