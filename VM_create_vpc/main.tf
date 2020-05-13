@@ -128,7 +128,6 @@ resource "vsphere_virtual_machine" "vm" {
     
       network_interface {}
 
-      ipv4_gateway = "${var.ip_gateway}"
       dns_server_list = ["${var.dns_server_ip}"]
     }
   }
