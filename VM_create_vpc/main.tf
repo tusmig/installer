@@ -160,16 +160,16 @@ resource "vsphere_virtual_machine" "vm" {
 # =================================================================
 #!/bin/bash
 
-if (( $# != 2 )); then
-echo "usage: please provide type (dvp) and network number (eg 102) as arguments"
-exit -1
-fi
+#if (( $# != 2 )); then
+#echo "usage: please provide type (dvp) and network number (eg 102) as arguments"
+#exit -1
+#fi
 
 #Add route file for interface ens224 and restart network
 
-type="$1"
-networknr="$2"
-network="${type} ${networknr}"
+#type="$1"
+#networknr="$2"
+network="${var.network}"
 vpc=`echo -n $network | tail -c 1`
 
 routefile="/etc/sysconfig/network-scripts/route-ens224"
@@ -201,7 +201,8 @@ resource "null_resource" "add_static_routes" {
     inline = [
       "set -e",
       "bash -c 'chmod +x add_static_routes.sh'",
-      "bash -c './add_static_routes.sh  \"${var.network}\" >> VM_add_static_routes.log 2>&1'",
+#      "bash -c './add_static_routes.sh  \"${var.network}\" >> VM_add_static_routes.log 2>&1'",
+      "bash -c './add_static_routes.sh > VM_add_static_routes.log 2>&1'",
     ]
   }
 }
