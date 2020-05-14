@@ -201,8 +201,7 @@ resource "null_resource" "add_static_routes" {
     inline = [
       "set -e",
       "bash -c 'chmod +x add_static_routes.sh'",
-#      "bash -c './add_static_routes.sh  \"${var.network}\" >> VM_add_static_routes.log 2>&1'",
-      "bash -c './add_static_routes.sh > VM_add_static_routes.log 2>&1'",
+      "bash -c './add_static_routes.sh  \"${var.network}\" >> VM_add_static_routes.log 2>&1'",
     ]
   }
 }
