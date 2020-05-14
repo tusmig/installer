@@ -160,16 +160,16 @@ resource "vsphere_virtual_machine" "vm" {
 # =================================================================
 #!/bin/bash
 
-#if (( $# != 2 )); then
-#echo "usage: please provide type (dvp) and network number (eg 102) as arguments"
-#exit -1
-#fi
+if (( $# != 2 )); then
+echo "usage: please provide type (dvp) and network number (eg 102) as arguments"
+exit -1
+fi
 
-#Add route file for interface ens224 and restart network
+Add route file for interface ens224 and restart network
 
-#type="$1"
-#networknr="$2"
-network="${var.network}"
+type="$1"
+networknr="$2"
+network="$type $networknr"
 vpc=`echo -n $network | tail -c 1`
 
 routefile="/etc/sysconfig/network-scripts/route-ens224"
