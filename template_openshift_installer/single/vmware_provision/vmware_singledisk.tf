@@ -27,15 +27,21 @@ resource "vsphere_virtual_machine" "vm" {
         host_name = "${var.vm_name[count.index]}"
       }
 
+      network_interface {}
+      
       network_interface {
         ipv4_address = "${var.vm_ipv4_address[count.index]}"
         ipv4_netmask = "${var.vm_ipv4_netmask}"
       }
 
-      ipv4_gateway    = "${var.vm_ipv4_gateway}"
+#      ipv4_gateway    = "${var.vm_ipv4_gateway}"
       dns_suffix_list = "${var.dns_suffixes}"
       dns_server_list = "${var.dns_servers}"
     }
+  }
+
+  network_interface {
+    network_id = "${data.vsphere_network.vm_beheer.id}"
   }
 
   network_interface {
@@ -203,17 +209,23 @@ resource "vsphere_virtual_machine" "vm2disk" {
         host_name = "${var.vm_name[count.index]}"
       }
 
+      network_interface {}
+      
       network_interface {
         ipv4_address = "${var.vm_ipv4_address[count.index]}"
         ipv4_netmask = "${var.vm_ipv4_netmask}"
       }
 
-      ipv4_gateway    = "${var.vm_ipv4_gateway}"
+#      ipv4_gateway    = "${var.vm_ipv4_gateway}"
       dns_suffix_list = "${var.dns_suffixes}"
       dns_server_list = "${var.dns_servers}"
     }
   }
 
+  network_interface {
+    network_id = "${data.vsphere_network.vm_beheer.id}"
+  }
+  
   network_interface {
     network_id   = "${data.vsphere_network.vm_network.id}"
     adapter_type = "${var.adapter_type}"
@@ -332,7 +344,6 @@ resource "null_resource" "add_ssh_key_2disk" {
   count = "${var.vm_disk2_enable == "true" && var.enable_vm == "true" ? length(var.vm_ipv4_address) : 0}"
   depends_on = ["vsphere_virtual_machine.vm2disk"]
   
-  # Specify the connection
   # Specify the connection
   connection {
     type     = "ssh"

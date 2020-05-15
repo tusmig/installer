@@ -18,6 +18,11 @@ data "vsphere_network" "vm_network" {
   datacenter_id = "${data.vsphere_datacenter.datacenter.id}"
 }
 
+data "vsphere_network" "vm_beheer" {
+  name          = "${var.beheer_network}"
+  datacenter_id = "${data.vsphere_datacenter.datacenter.id}"
+}
+
 data "vsphere_virtual_machine" "vm_image_template" {
   name = "${var.vm_image_template}"
   datacenter_id = "${data.vsphere_datacenter.datacenter.id}"
@@ -92,12 +97,16 @@ variable "dns_servers" {
 }
 
 variable "network" {
-  description = "vSphere port group or network label for virtual machine's vNIC"
+  description = "vSphere port group or network label for virtual machine's vNIC in production/vpc network"
 }
 
-variable "vm_ipv4_gateway" {
-  description = "IPv4 gateway for vNIC configuration"
+variable "beheer_network" {
+  description = "vSphere port group or network label for virtual machine's vNIC in beheer network"
 }
+
+#variable "vm_ipv4_gateway" {
+#  description = "IPv4 gateway for vNIC configuration"
+#}
 
 variable "vm_ipv4_address" {
   default = []
