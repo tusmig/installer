@@ -35,10 +35,10 @@ variable "enable_vm" {
 variable "vm_name" {
   type = "list"
 }
-variable "count" {
-  type = "string"
-  default = "1"
-}
+#variable "count" {
+#  type = "string"
+#  default = "1"
+#}
 
 #########################################################
 ##### Resource : vm_

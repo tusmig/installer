@@ -155,7 +155,7 @@ EOF
   }
   
   provisioner "local-exec" {
-    command = "echo \"${self.clone.0.customize.0.network_interface.0.ipv4_address}       ${self.name}.${var.vm_domain_name} ${self.name}\" >> /tmp/${var.random}/hosts"
+    command = "echo \"${vsphere_virtual_machine.vm.default_ip_address}       ${self.name}.${var.vm_domain_name} ${self.name}\" >> /tmp/${var.random}/hosts"
   }
 }
 
@@ -164,10 +164,11 @@ resource "null_resource" "add_ssh_key" {
   count = "${var.vm_disk2_enable == "false" && var.enable_vm == "true" ? length(var.vm_ipv4_address) : 0}"
   # Specify the connection
   connection {
-    type     = "ssh"
-    user     = "${var.vm_os_user}"
-    password = "${var.vm_os_password}"
-    host     = "${var.vm_ipv4_address[count.index]}"
+    type                = "ssh"
+    user                = "${var.vm_os_user}"
+    password            = "${var.vm_os_password}"
+#    host     = "${var.vm_ipv4_address[count.index]}"
+    host                = "${vsphere_virtual_machine.vm.default_ip_address}"
     bastion_host        = "${var.bastion_host}"
     bastion_user        = "${var.bastion_user}"
     bastion_private_key = "${ length(var.bastion_private_key) > 0 ? base64decode(var.bastion_private_key) : var.bastion_private_key}"
@@ -336,7 +337,7 @@ EOF
   }
   
   provisioner "local-exec" {
-    command = "echo \"${self.clone.0.customize.0.network_interface.0.ipv4_address}       ${self.name}.${var.vm_domain_name} ${self.name}\" >> /tmp/${var.random}/hosts"
+    command = "echo \"${vsphere_virtual_machine.vm.default_ip_address}       ${self.name}.${var.vm_domain_name} ${self.name}\" >> /tmp/${var.random}/hosts"
   }
 }
 
@@ -349,7 +350,8 @@ resource "null_resource" "add_ssh_key_2disk" {
     type     = "ssh"
     user     = "${var.vm_os_user}"
     password = "${var.vm_os_password}"
-    host     = "${var.vm_ipv4_address[count.index]}"
+#    host     = "${var.vm_ipv4_address[count.index]}"
+    host                = "${vsphere_virtual_machine.vm.default_ip_address}"
     bastion_host        = "${var.bastion_host}"
     bastion_user        = "${var.bastion_user}"
     bastion_private_key = "${ length(var.bastion_private_key) > 0 ? base64decode(var.bastion_private_key) : var.bastion_private_key}"
