@@ -106,9 +106,9 @@ variable "vm_private_network_interface_label" {
   description = "vSphere port group or network label for virtual machine's private vNIC"
 }
 
-variable "vm_ipv4_gateway" {
-  description = "IPv4 gateway for vNIC configuration"
-}
+#variable "vm_ipv4_gateway" {
+#  description = "IPv4 gateway for vNIC configuration"
+#}
 
 variable "vm_ipv4_address" {
   description = "IPv4 address for vNIC configuration"

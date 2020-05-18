@@ -202,7 +202,7 @@ resource "vsphere_virtual_machine" "vm2disk" {
         host_name = "${var.vm_name}"
       }
       
-      network_interface{}
+      network_interface {}
 
       network_interface {
         ipv4_address = "${var.vm_ipv4_address}"
