@@ -19,7 +19,10 @@ resource "vsphere_virtual_machine" "vm" {
         host_name = "${var.vm_name}"
       }
 
-      network_interface {}
+      network_interface {
+        ipv4_address = "${var.vm_ip4_mgmt_network}"
+        ipv4_netmask = "${var.vm_ipv4_prefix_length}"
+      }
 
       network_interface {
         ipv4_address = "${var.vm_ipv4_address}"
@@ -31,7 +34,7 @@ resource "vsphere_virtual_machine" "vm" {
         ipv4_netmask = "24"
       }      
 
-#      ipv4_gateway    = "${var.vm_ipv4_gateway}"
+      ipv4_gateway    = "${var.vm_ipv4_gateway}"
       dns_suffix_list = "${var.vm_dns_suffixes}"
       dns_server_list = "${var.vm_dns_servers}"
     }
@@ -161,7 +164,7 @@ resource "null_resource" "add_ssh_key" {
     user     = "${var.vm_os_user}"
     password = "${var.vm_os_password}"
 #    host = "${var.vm_ipv4_address}"
-    host                = "${vsphere_virtual_machine.vm.default_ip_address}"
+    host                = "${var.vm_ip4_mgmt_network}"
     bastion_host        = "${var.bastion_host}"
     bastion_user        = "${var.bastion_user}"
     bastion_private_key = "${ length(var.bastion_private_key) > 0 ? base64decode(var.bastion_private_key) : var.bastion_private_key}"
@@ -202,7 +205,10 @@ resource "vsphere_virtual_machine" "vm2disk" {
         host_name = "${var.vm_name}"
       }
       
-      network_interface {}
+      network_interface {
+        ipv4_address = "${var.vm_ip4_mgmt_network}"
+        ipv4_netmask = "${var.vm_ipv4_prefix_length}"
+      }
 
       network_interface {
         ipv4_address = "${var.vm_ipv4_address}"
@@ -214,7 +220,7 @@ resource "vsphere_virtual_machine" "vm2disk" {
         ipv4_netmask = "${var.vm_private_ipv4_prefix_length}"
       }      
 
-#      ipv4_gateway    = "${var.vm_ipv4_gateway}"
+      ipv4_gateway    = "${var.vm_ipv4_gateway}"
       dns_suffix_list = "${var.vm_dns_suffixes}"
       dns_server_list = "${var.vm_dns_servers}"
     }
@@ -346,7 +352,7 @@ resource "null_resource" "add_ssh_key_2disk" {
     user     = "${var.vm_os_user}"
     password = "${var.vm_os_password}"
 #    host = "${var.vm_ipv4_address}"
-    host                = "${vsphere_virtual_machine.vm.default_ip_address}"
+    host                = "${var.vm_ip4_mgmt_network}"
     bastion_host        = "${var.bastion_host}"
     bastion_user        = "${var.bastion_user}"
     bastion_private_key = "${ length(var.bastion_private_key) > 0 ? base64decode(var.bastion_private_key) : var.bastion_private_key}"
