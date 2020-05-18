@@ -22,6 +22,11 @@ data "vsphere_network" "vm_private_network" {
   datacenter_id = "${data.vsphere_datacenter.vsphere_datacenter.id}"
 }
 
+data "vsphere_network" "vm_mgmt_network" {
+  name = "${var.vm_mgmt_network_interface_label}"
+  datacenter_id = "${data.vsphere_datacenter.vsphere_datacenter.id}"
+}
+
 data "vsphere_virtual_machine" "vm_template" {
   name = "${var.vm_template}"
   datacenter_id = "${data.vsphere_datacenter.vsphere_datacenter.id}"
@@ -87,6 +92,10 @@ variable "vm_dns_suffixes" {
 variable "vm_dns_servers" {
   type = "list"
   description = "DNS servers for the virtual network adapter"
+}
+
+variable "vm_mgmt_network_interface_label" {
+  description = "vSphere port group or network label for virtual machine's mgmt vNIC"
 }
 
 variable "vm_public_network_interface_label" {

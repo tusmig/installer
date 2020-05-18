@@ -18,3 +18,4 @@ variable "dhcp_netmask"         { default = ""     type = "string"  description 
 variable "dhcp_lease_time"      { default = ""     type = "string"  description = "Length of time to be assigned to a DHCP lease" }
 
 variable "dependsOn"            { default = "true"                  description = "Boolean for dependency"}
+variable "vm_ipv4_mgmt_address"      { default = ""     type = "string"  description = "mgmt nic" }

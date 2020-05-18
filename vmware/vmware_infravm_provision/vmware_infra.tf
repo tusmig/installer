@@ -19,6 +19,8 @@ resource "vsphere_virtual_machine" "vm" {
         host_name = "${var.vm_name}"
       }
 
+      network_interface {}
+
       network_interface {
         ipv4_address = "${var.vm_ipv4_address}"
         ipv4_netmask = "${var.vm_ipv4_prefix_length}"
@@ -29,11 +31,15 @@ resource "vsphere_virtual_machine" "vm" {
         ipv4_netmask = "24"
       }      
 
-      ipv4_gateway    = "${var.vm_ipv4_gateway}"
+#      ipv4_gateway    = "${var.vm_ipv4_gateway}"
       dns_suffix_list = "${var.vm_dns_suffixes}"
       dns_server_list = "${var.vm_dns_servers}"
     }
   }
+
+ network_interface {
+ network_id   = "${data.vsphere_network.vm_mgmt_network.id}"
+ }
 
   network_interface {
     network_id   = "${data.vsphere_network.vm_public_network.id}"
@@ -143,7 +149,7 @@ EOF
   }
 
   provisioner "local-exec" {
-    command = "echo \"${self.clone.0.customize.0.network_interface.0.ipv4_address}       ${self.name}.${var.vm_domain} ${self.name}\" >> /tmp/${var.random}/hosts"
+    command = "echo \"${self.clone.0.customize.0.network_interface.1.ipv4_address}       ${self.name}.${var.vm_domain} ${self.name}\" >> /tmp/${var.random}/hosts"
   }
 }
 
@@ -154,7 +160,8 @@ resource "null_resource" "add_ssh_key" {
     type     = "ssh"
     user     = "${var.vm_os_user}"
     password = "${var.vm_os_password}"
-    host = "${var.vm_ipv4_address}"
+#    host = "${var.vm_ipv4_address}"
+    host                = "${vsphere_virtual_machine.vm.default_ip_address}"
     bastion_host        = "${var.bastion_host}"
     bastion_user        = "${var.bastion_user}"
     bastion_private_key = "${ length(var.bastion_private_key) > 0 ? base64decode(var.bastion_private_key) : var.bastion_private_key}"
@@ -194,6 +201,8 @@ resource "vsphere_virtual_machine" "vm2disk" {
         domain    = "${var.vm_domain}"
         host_name = "${var.vm_name}"
       }
+      
+      network_interface{}
 
       network_interface {
         ipv4_address = "${var.vm_ipv4_address}"
@@ -210,7 +219,10 @@ resource "vsphere_virtual_machine" "vm2disk" {
       dns_server_list = "${var.vm_dns_servers}"
     }
   }
-
+  network_interface {
+    network_id   = "${data.vsphere_network.vm_mgmt_network.id}"
+  }
+  
   network_interface {
     network_id   = "${data.vsphere_network.vm_public_network.id}"
     adapter_type = "${var.vm_public_adapter_type}"
@@ -320,7 +332,7 @@ EOF
 
 
   provisioner "local-exec" {
-    command = "echo \"${self.clone.0.customize.0.network_interface.0.ipv4_address}       ${self.name}.${var.vm_domain} ${self.name}\" >> /tmp/${var.random}/hosts"
+    command = "echo \"${self.clone.0.customize.0.network_interface.1.ipv4_address}       ${self.name}.${var.vm_domain} ${self.name}\" >> /tmp/${var.random}/hosts"
   }
 }
 
@@ -333,7 +345,8 @@ resource "null_resource" "add_ssh_key_2disk" {
     type     = "ssh"
     user     = "${var.vm_os_user}"
     password = "${var.vm_os_password}"
-    host = "${var.vm_ipv4_address}"
+#    host = "${var.vm_ipv4_address}"
+    host                = "${vsphere_virtual_machine.vm.default_ip_address}"
     bastion_host        = "${var.bastion_host}"
     bastion_user        = "${var.bastion_user}"
     bastion_private_key = "${ length(var.bastion_private_key) > 0 ? base64decode(var.bastion_private_key) : var.bastion_private_key}"

@@ -10,6 +10,12 @@ variable "vm_ipv4_address" {
   description = "IPv4 address for vNIC configuration"
   type = "string"
 }
+
+variable "vm_ipv4_mgmt_address" {
+  description = "IPv4 address for mgmt vNIC configuration"
+  type = "string"
+}
+
 variable "dependsOn" {
   default = "true"
   description = "Boolean for dependency"
