@@ -4,5 +4,5 @@ output "dependsOn" {
 }
 
 output "vm_mgmt_network_ip" {
-  value = "${vsphere_virtual_machine.vm.var.management_ip}"
+  value = "${vsphere_virtual_machine.vm.*.var.management_ip}"
 }            
