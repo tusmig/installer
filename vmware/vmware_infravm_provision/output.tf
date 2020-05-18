@@ -4,5 +4,5 @@ output "dependsOn" {
 }
 
 output "vm_mgmt_network_ip" {
-  value = "${vsphere_virtual_machine.vm.1.default_ip_address}"
+  value = "${vsphere_virtual_machine.*.default_ip_address[0]}"
 }            
