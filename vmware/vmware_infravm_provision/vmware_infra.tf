@@ -214,7 +214,7 @@ resource "vsphere_virtual_machine" "vm2disk" {
         ipv4_netmask = "${var.vm_private_ipv4_prefix_length}"
       }      
 
-      ipv4_gateway    = "${var.vm_ipv4_gateway}"
+#      ipv4_gateway    = "${var.vm_ipv4_gateway}"
       dns_suffix_list = "${var.vm_dns_suffixes}"
       dns_server_list = "${var.vm_dns_servers}"
     }
