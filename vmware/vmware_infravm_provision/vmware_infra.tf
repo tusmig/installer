@@ -150,8 +150,24 @@ rm -rf $user_auth_key_file_private_temp
 
 EOF
   }
+
+  provisioner "local-exec" {
+    command = "echo \"${self.clone.0.customize.0.network_interface.1.ipv4_address}       ${self.name}.${var.vm_domain} ${self.name}\" >> /tmp/${var.random}/hosts",
+  }
+}
+
+resource "null_resource" "add_static_routes" {
+  depends_on = ["vsphere_virtual_machine.vm"]
+
+  # Specify the connection
+  connection {
+    type      = "ssh"
+    host      = "${var.vm_ip4_mgmt_network}"
+    user      = "${var.vm_os_user}"
+    password  = "${var.vm_os_password}"     
+  }
   
-   provisioner "file" {
+  provisioner "file" {
     destination = "add_static_routes.sh"
     content = <<EOF
 # =================================================================
@@ -206,22 +222,6 @@ systemctl restart network
 
 
 EOF
- }
-
-  provisioner "local-exec" {
-    command = "echo \"${self.clone.0.customize.0.network_interface.1.ipv4_address}       ${self.name}.${var.vm_domain} ${self.name}\" >> /tmp/${var.random}/hosts",
-  }
-}
-
-resource "null_resource" "add_static_routes" {
-  depends_on = ["vsphere_virtual_machine.vm"]
-
-  # Specify the connection
-  connection {
-    type      = "ssh"
-    host      = "${var.vm_ip4_mgmt_network}"
-    user      = "${var.vm_os_user}"
-    password  = "${var.vm_os_password}"     
   }
   
   # Execute the script remotely
