@@ -152,13 +152,6 @@ EOF
   }
   
    provisioner "file" {
-    connection  = {
-      type      = "ssh"
-      host      = "${vsphere_virtual_machine.vm.default_ip_address}"
-      user     = "${var.vm_os_user}"
-      password = "${var.vm_os_password}"  
-    }
-
     destination = "add_static_routes.sh"
     content = <<EOF
 # =================================================================
