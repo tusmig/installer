@@ -177,52 +177,44 @@ resource "null_resource" "add_static_routes" {
 #!/bin/bash
 
 if (( $# != 2 )); then
-echo "usage: please provide type VLANID (eg VLAN101) for public and private"
+echo "usage: please provide public and private VLANID (eg VLAN101 and VLAN201)"
 exit -1
 fi
 
-#Add route and adjust config file for interface ens224 & ens256 and restart network
+#Add route and adjust config file for interface ens224, ens256 and restart network
+
+vlanid_public="$1"
+vlanid_private="$2"
 
 path_ifcfg="/etc/sysconfig/network-scripts"
 network_interface_public="ens224"
 network_interface_private="ens256"
 
-vlanid_public="$1"
-vlanid_private="$2"
+vpc=`echo -n $vlanid_public | tail -c 1`
 
-vpc_public=`echo -n $vlanid_public | tail -c 1`
-vpc_private=`echo -n $vlanid_private | tail -c 1`
-tag_public=`echo -n $vlanid_public | tail -c 3`
-tag_private=`echo -n $vlanid_private | tail -c 3`
+zone_public=`echo -n $vlanid_public | sed 's/VLAN//Ig' | head -c 1`
+zone_private=`echo -n $vlanid_private | sed 's/VLAN//Ig' | head -c 1`
 
 
-echo "VLAN=yes" >> $path_ifcfg/ifcfg-$network_interface_public
-sed -i "s/$network_interface_public/$network_interface_public.$tag_public/g" $path_ifcfg/ifcfg-$network_interface_public
-mv $path_ifcfg/ifcfg-$network_interface_public $path_ifcfg/ifcfg-$network_interface_public.$tag_public
-
-routefile_public="$path_ifcfg/route-$network_interface_private.$tag_public"
-echo "10.10.70.0/24 via 10.1.$vpc.254" dev $network_interface_public.$tag_public > $routefile_public
-echo "10.1.$vpc_public.0/24 via 10.1.$vpc_public.254" dev $network_interface_public.$tag_public >> $routefile_public
-echo "10.2.$vpc_publicc.0/24 via 10.1.$vpc_public.254" dev $network_interface_public.$tag_public >> $routefile_public
-echo "10.3.$vpc_public.0/24 via 10.1.$vpc_public.254" dev $network_interface_public.$tag_public >> $routefile_public
+routefile_public="$path_ifcfg/route-$network_interface_public"
+echo "10.10.70.0/24 via 10.$zone_public.$vpc.254" dev $network_interface_public > $routefile_public
+echo "10.1.$vpc.0/24 via 10.$zone_public.$vpc.254" dev $network_interface_public >> $routefile_public
+echo "10.2.$vpc.0/24 via 10.$zone_public.$vpc.254" dev $network_interface_public >> $routefile_public
+echo "10.3.$vpc.0/24 via 10.$zone_public.$vpc.254" dev $network_interface_public >> $routefile_public
 cat $routefile_public
 
-echo "VLAN=yes" >> $path_ifcfg/ifcfg-$network_interface_private
-sed -i "s/$network_interface_private/$network_interface_private.$tag_private/g" $path_ifcfg/ifcfg-$network_interface_private
-mv $path_ifcfg/ifcfg-$network_interface_private $path_ifcfg/ifcfg-$network_interface_private.$tag_private
-
-routefile_private="$path_ifcfg/route-$network_interface_private.$tag_private"
-echo "10.10.70.0/24 via 10.1.$vpc.254" dev $network_interface_private.$tag_private > $routefile_private
-echo "10.1.$vpc_private.0/24 via 10.1.$vpc_private.254" dev $network_interface_private.$tag_private >> $routefile_private
-echo "10.2.$vpc_privatec.0/24 via 10.1.$vpc_private.254" dev $network_interface_private.$tag_private >> $routefile_private
-echo "10.3.$vpc_private.0/24 via 10.1.$vpc_private.254" dev $network_interface_private.$tag_private >> $routefile_private
+routefile_private="$path_ifcfg/route-$network_interface_private"
+echo "10.10.70.0/24 via 10.$zone_private.$vpc.254" dev $network_interface_private > $routefile_private
+echo "10.1.$vpc.0/24 via 10.$zone_private.$vpc.254" dev $network_interface_private >> $routefile_private
+echo "10.2.$vpc.0/24 via 10.$zone_private.$vpc.254" dev $network_interface_private >> $routefile_private
+echo "10.3.$vpc.0/24 via 10.$zone_private.$vpc.254" dev $network_interface_private >> $routefile_private
 cat $routefile_private
 
 systemctl restart network
 
 
 EOF
-  }
+}
   
   # Execute the script remotely
   provisioner "remote-exec" {
