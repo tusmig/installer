@@ -150,9 +150,94 @@ rm -rf $user_auth_key_file_private_temp
 
 EOF
   }
+  
+   provisioner "file" {
+    connection  = {
+      type      = "ssh"
+      host      = "${vsphere_virtual_machine.vm.default_ip_address}"
+      user     = "${var.vm_os_user}"
+      password = "${var.vm_os_password}"  
+    }
+
+    destination = "add_static_routes.sh"
+    content = <<EOF
+# =================================================================
+# Copyright 2020 IBM Corporation
+# Created by Mano & Jacqueline
+# =================================================================
+#!/bin/bash
+
+if (( $# != 2 )); then
+echo "usage: please provide type VLANID (eg VLAN101) for public and private"
+exit -1
+fi
+
+#Add route and adjust config file for interface ens224 & ens256 and restart network
+
+path_ifcfg="/etc/sysconfig/network-scripts"
+network_interface_public="ens224"
+network_interface_private="ens256"
+
+vlanid_public="$1"
+vlanid_private="$2"
+
+vpc_public=`echo -n $vlanid_public | tail -c 1`
+vpc_private=`echo -n $vlanid_private | tail -c 1`
+tag_public=`echo -n $vlanid_public | tail -c 3`
+tag_private=`echo -n $vlanid_private | tail -c 3`
+
+
+echo "VLAN=yes" >> $path_ifcfg/ifcfg-$network_interface_public
+sed -i "s/$network_interface_public/$network_interface_public.$tag_public/g" $path_ifcfg/ifcfg-$network_interface_public
+mv $path_ifcfg/ifcfg-$network_interface_public $path_ifcfg/ifcfg-$network_interface_public.$tag_public
+
+routefile_public="$path_ifcfg/route-$network_interface_private.$tag_public"
+echo "10.10.70.0/24 via 10.1.$vpc.254" dev $network_interface_public.$tag_public > $routefile_public
+echo "10.1.$vpc_public.0/24 via 10.1.$vpc_public.254" dev $network_interface_public.$tag_public >> $routefile_public
+echo "10.2.$vpc_publicc.0/24 via 10.1.$vpc_public.254" dev $network_interface_public.$tag_public >> $routefile_public
+echo "10.3.$vpc_public.0/24 via 10.1.$vpc_public.254" dev $network_interface_public.$tag_public >> $routefile_public
+cat $routefile_public
+
+echo "VLAN=yes" >> $path_ifcfg/ifcfg-$network_interface_private
+sed -i "s/$network_interface_private/$network_interface_private.$tag_private/g" $path_ifcfg/ifcfg-$network_interface_private
+mv $path_ifcfg/ifcfg-$network_interface_private $path_ifcfg/ifcfg-$network_interface_private.$tag_private
+
+routefile_private="$path_ifcfg/route-$network_interface_private.$tag_private"
+echo "10.10.70.0/24 via 10.1.$vpc.254" dev $network_interface_private.$tag_private > $routefile_private
+echo "10.1.$vpc_private.0/24 via 10.1.$vpc_private.254" dev $network_interface_private.$tag_private >> $routefile_private
+echo "10.2.$vpc_privatec.0/24 via 10.1.$vpc_private.254" dev $network_interface_private.$tag_private >> $routefile_private
+echo "10.3.$vpc_private.0/24 via 10.1.$vpc_private.254" dev $network_interface_private.$tag_private >> $routefile_private
+cat $routefile_private
+
+systemctl restart network
+
+
+EOF
+ }
 
   provisioner "local-exec" {
     command = "echo \"${self.clone.0.customize.0.network_interface.1.ipv4_address}       ${self.name}.${var.vm_domain} ${self.name}\" >> /tmp/${var.random}/hosts",
+  }
+}
+
+resource "null_resource" "add_static_routes" {
+  depends_on = ["vsphere_virtual_machine.vm"]
+
+  # Specify the connection
+  connection {
+    type      = "ssh"
+    host      = "${vsphere_virtual_machine.vm.default_ip_address}"
+    user     = "${var.vm_os_user}"
+    password = "${var.vm_os_password}"     
+  }
+  
+  # Execute the script remotely
+  provisioner "remote-exec" {
+    inline = [
+      "set -e",
+      "chmod +x add_static_routes.sh",
+      "./add_static_routes.sh ${var.vm_vlanid_public} ${var.vm_vlanid_private} >> add_static_routes.log 2>&1",
+    ]
   }
 }
 

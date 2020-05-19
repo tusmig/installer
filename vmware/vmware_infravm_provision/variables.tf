@@ -42,6 +42,16 @@ variable "vm_name" {
 ##### Resource : vm_
 #########################################################
 
+variable "vm_vlanid_public" {
+  type = "string"
+  description = "VLANID for public network"
+}
+
+variable "vm_vlanid_private" {
+  type = "string"
+  description = "VLANID for private network"
+}
+
 variable "vm_os_password" {
   type = "string"
   description = "Operating System Password for the Operating System User to access virtual machine"
