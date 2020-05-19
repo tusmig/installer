@@ -226,9 +226,9 @@ resource "null_resource" "add_static_routes" {
   # Specify the connection
   connection {
     type      = "ssh"
-    host      = "${vsphere_virtual_machine.vm.default_ip_address}"
-    user     = "${var.vm_os_user}"
-    password = "${var.vm_os_password}"     
+    host      = "${var.vm_ip4_mgmt_network}"
+    user      = "${var.vm_os_user}"
+    password  = "${var.vm_os_password}"     
   }
   
   # Execute the script remotely
