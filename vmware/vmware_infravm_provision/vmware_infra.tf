@@ -27,7 +27,12 @@ resource "vsphere_virtual_machine" "vm" {
       network_interface {
         ipv4_address = "${var.vm_ipv4_private_address}"
         ipv4_netmask = "24"
-      }      
+      }
+      
+      network_interface {
+        ipv4_address = "${var.vm_ipv4_vpc_address}"
+        ipv4_netmask = "24"
+      }   
 
       ipv4_gateway    = "${var.vm_ipv4_gateway}"
       dns_suffix_list = "${var.vm_dns_suffixes}"
@@ -41,6 +46,11 @@ resource "vsphere_virtual_machine" "vm" {
   }
   
   network_interface {
+    network_id   = "${data.vsphere_network.vm_private_network.id}"
+    adapter_type = "${var.vm_private_adapter_type}"
+  }
+  
+    network_interface {
     network_id   = "${data.vsphere_network.vm_private_network.id}"
     adapter_type = "${var.vm_private_adapter_type}"
   }
@@ -172,12 +182,12 @@ echo "usage: please provide private VLANID (eg VLAN101)"
 exit -1
 fi
 
-#Add route and adjust config file for interface ens224 and restart network
+#Add route and adjust config file for interface ens256 and restart network
 
 vlanid_private="$1"
 
 path_ifcfg="/etc/sysconfig/network-scripts"
-network_interface_private="ens224"
+network_interface_private="ens256"
 
 vpc=`echo -n $vlanid_private | tail -c 1`
 zone_private=`echo -n $vlanid_private | head -c 1`
@@ -263,7 +273,12 @@ resource "vsphere_virtual_machine" "vm2disk" {
       network_interface {
         ipv4_address = "${var.vm_ipv4_private_address}"
         ipv4_netmask = "${var.vm_private_ipv4_prefix_length}"
-      }      
+      }
+      
+      network_interface {
+        ipv4_address = "${var.vm_ipv4_vpc_address}"
+        ipv4_netmask = "${var.vm_private_ipv4_prefix_length}"
+      }  
 
       ipv4_gateway    = "${var.vm_ipv4_gateway}"
       dns_suffix_list = "${var.vm_dns_suffixes}"
@@ -277,6 +292,11 @@ resource "vsphere_virtual_machine" "vm2disk" {
   }
   
   network_interface {
+    network_id   = "${data.vsphere_network.vm_private_network.id}"
+    adapter_type = "${var.vm_private_adapter_type}"
+  }
+  
+    network_interface {
     network_id   = "${data.vsphere_network.vm_private_network.id}"
     adapter_type = "${var.vm_private_adapter_type}"
   }

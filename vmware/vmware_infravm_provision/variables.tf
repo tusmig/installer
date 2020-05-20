@@ -116,6 +116,11 @@ variable "vm_ipv4_private_address" {
   type = "string"
 }
 
+variable "vm_ipv4_vpc_address" {
+  description = "IPv4 for VPC zone"
+  type = "string"
+}
+
 variable "vm_ipv4_prefix_length" {
   description = "IPv4 prefix length for vNIC configuration. The value must be a number between 8 and 32"
 }
@@ -133,7 +138,6 @@ variable "vm_public_adapter_type" {
   description = "Network adapter type for vNIC Configuration"
   default = "vmxnet3"
 }
-
 
 variable "vm_disk1_size" {
   description = "Size of template disk volume"
