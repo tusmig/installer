@@ -20,11 +20,6 @@ resource "vsphere_virtual_machine" "vm" {
       }
 
       network_interface {
-        ipv4_address = "${var.vm_ip4_mgmt_network}"
-        ipv4_netmask = "${var.vm_ipv4_prefix_length}"
-      }
-
-      network_interface {
         ipv4_address = "${var.vm_ipv4_address}"
         ipv4_netmask = "${var.vm_ipv4_prefix_length}"
       }
@@ -39,10 +34,6 @@ resource "vsphere_virtual_machine" "vm" {
       dns_server_list = "${var.vm_dns_servers}"
     }
   }
-
- network_interface {
- network_id   = "${data.vsphere_network.vm_mgmt_network.id}"
- }
 
   network_interface {
     network_id   = "${data.vsphere_network.vm_public_network.id}"
@@ -152,7 +143,7 @@ EOF
   }
 
   provisioner "local-exec" {
-    command = "echo \"${self.clone.0.customize.0.network_interface.1.ipv4_address}       ${self.name}.${var.vm_domain} ${self.name}\" >> /tmp/${var.random}/hosts",
+    command = "echo \"${self.clone.0.customize.0.network_interface.0.ipv4_address}       ${self.name}.${var.vm_domain} ${self.name}\" >> /tmp/${var.random}/hosts"
   }
 }
 
@@ -162,7 +153,7 @@ resource "null_resource" "add_static_routes" {
   # Specify the connection
   connection {
     type      = "ssh"
-    host      = "${var.vm_ip4_mgmt_network}"
+    host      = "${var.vm_ipv4_address}"
     user      = "${var.vm_os_user}"
     password  = "${var.vm_os_password}"     
   }
@@ -176,32 +167,21 @@ resource "null_resource" "add_static_routes" {
 # =================================================================
 #!/bin/bash
 
-if (( $# != 2 )); then
-echo "usage: please provide public and private VLANID (eg VLAN101 and VLAN201)"
+if (( $# != 1 )); then
+echo "usage: please provide private VLANID (eg VLAN101)"
 exit -1
 fi
 
-#Add route and adjust config file for interface ens224, ens256 and restart network
+#Add route and adjust config file for interface ens224 and restart network
 
-vlanid_public="$1"
-vlanid_private="$2"
+vlanid_private="$1"
 
 path_ifcfg="/etc/sysconfig/network-scripts"
-network_interface_public="ens224"
-network_interface_private="ens256"
+network_interface_private="ens224"
 
-vpc=`echo -n $vlanid_public | tail -c 1`
+vpc=`echo -n $vlanid_private | tail -c 1`
+zone_private=`echo -n $vlanid_private | head -c 1`
 
-zone_public=`echo -n $vlanid_public | sed 's/VLAN//Ig' | head -c 1`
-zone_private=`echo -n $vlanid_private | sed 's/VLAN//Ig' | head -c 1`
-
-
-#routefile_public="$path_ifcfg/route-$network_interface_public"
-#echo "10.10.70.0/24 via 10.$zone_public.$vpc.254" dev $network_interface_public > $routefile_public
-#echo "10.1.$vpc.0/24 via 10.$zone_public.$vpc.254" dev $network_interface_public >> $routefile_public
-#echo "10.2.$vpc.0/24 via 10.$zone_public.$vpc.254" dev $network_interface_public >> $routefile_public
-#echo "10.3.$vpc.0/24 via 10.$zone_public.$vpc.254" dev $network_interface_public >> $routefile_public
-#cat $routefile_public
 
 routefile_private="$path_ifcfg/route-$network_interface_private"
 echo "10.10.70.0/24 via 10.$zone_private.$vpc.254" dev $network_interface_private > $routefile_private
@@ -221,10 +201,11 @@ EOF
     inline = [
       "set -e",
       "chmod +x add_static_routes.sh",
-      "./add_static_routes.sh ${var.vm_vlanid_public} ${var.vm_vlanid_private} >> add_static_routes.log 2>&1",
+      "./add_static_routes.sh ${var.vm_vlanid_private} >> add_static_routes.log 2>&1",
     ]
   }
 }
+
 
 resource "null_resource" "add_ssh_key" {
   depends_on = ["vsphere_virtual_machine.vm"]
@@ -233,8 +214,7 @@ resource "null_resource" "add_ssh_key" {
     type     = "ssh"
     user     = "${var.vm_os_user}"
     password = "${var.vm_os_password}"
-#    host = "${var.vm_ipv4_address}"
-    host                = "${var.vm_ip4_mgmt_network}"
+    host = "${var.vm_ipv4_address}"
     bastion_host        = "${var.bastion_host}"
     bastion_user        = "${var.bastion_user}"
     bastion_private_key = "${ length(var.bastion_private_key) > 0 ? base64decode(var.bastion_private_key) : var.bastion_private_key}"
@@ -274,11 +254,6 @@ resource "vsphere_virtual_machine" "vm2disk" {
         domain    = "${var.vm_domain}"
         host_name = "${var.vm_name}"
       }
-      
-      network_interface {
-        ipv4_address = "${var.vm_ip4_mgmt_network}"
-        ipv4_netmask = "${var.vm_ipv4_prefix_length}"
-      }
 
       network_interface {
         ipv4_address = "${var.vm_ipv4_address}"
@@ -295,10 +270,7 @@ resource "vsphere_virtual_machine" "vm2disk" {
       dns_server_list = "${var.vm_dns_servers}"
     }
   }
-  network_interface {
-    network_id   = "${data.vsphere_network.vm_mgmt_network.id}"
-  }
-  
+
   network_interface {
     network_id   = "${data.vsphere_network.vm_public_network.id}"
     adapter_type = "${var.vm_public_adapter_type}"
@@ -408,7 +380,7 @@ EOF
 
 
   provisioner "local-exec" {
-    command = "echo \"${self.clone.0.customize.0.network_interface.1.ipv4_address}       ${self.name}.${var.vm_domain} ${self.name}\" >> /tmp/${var.random}/hosts"
+    command = "echo \"${self.clone.0.customize.0.network_interface.0.ipv4_address}       ${self.name}.${var.vm_domain} ${self.name}\" >> /tmp/${var.random}/hosts"
   }
 }
 
@@ -421,8 +393,7 @@ resource "null_resource" "add_ssh_key_2disk" {
     type     = "ssh"
     user     = "${var.vm_os_user}"
     password = "${var.vm_os_password}"
-#    host = "${var.vm_ipv4_address}"
-    host                = "${var.vm_ip4_mgmt_network}"
+    host = "${var.vm_ipv4_address}"
     bastion_host        = "${var.bastion_host}"
     bastion_user        = "${var.bastion_user}"
     bastion_private_key = "${ length(var.bastion_private_key) > 0 ? base64decode(var.bastion_private_key) : var.bastion_private_key}"
@@ -450,4 +421,3 @@ resource "null_resource" "vm-create_done" {
     command = "echo 'VM creates done for ${var.vm_name}X.'"
   }
 }
-

@@ -22,11 +22,6 @@ data "vsphere_network" "vm_private_network" {
   datacenter_id = "${data.vsphere_datacenter.vsphere_datacenter.id}"
 }
 
-data "vsphere_network" "vm_mgmt_network" {
-  name = "${var.vm_mgmt_network_interface_label}"
-  datacenter_id = "${data.vsphere_datacenter.vsphere_datacenter.id}"
-}
-
 data "vsphere_virtual_machine" "vm_template" {
   name = "${var.vm_template}"
   datacenter_id = "${data.vsphere_datacenter.vsphere_datacenter.id}"
@@ -41,16 +36,6 @@ variable "vm_name" {
 #########################################################
 ##### Resource : vm_
 #########################################################
-
-variable "vm_vlanid_public" {
-  type = "string"
-  description = "VLANID for public network"
-}
-
-variable "vm_vlanid_private" {
-  type = "string"
-  description = "VLANID for private network"
-}
 
 variable "vm_os_password" {
   type = "string"
@@ -104,10 +89,6 @@ variable "vm_dns_servers" {
   description = "DNS servers for the virtual network adapter"
 }
 
-variable "vm_mgmt_network_interface_label" {
-  description = "vSphere port group or network label for virtual machine's mgmt vNIC"
-}
-
 variable "vm_public_network_interface_label" {
   description = "vSphere port group or network label for virtual machine's public vNIC"
 }
@@ -120,13 +101,13 @@ variable "vm_ipv4_gateway" {
   description = "IPv4 gateway for vNIC configuration"
 }
 
-variable "vm_ip4_mgmt_network" {
+variable "vm_ipv4_address" {
   description = "IPv4 address for vNIC configuration"
   type = "string"
 }
 
-variable "vm_ipv4_address" {
-  description = "IPv4 address for vNIC configuration"
+variable "vm_vlanid_private" {
+  description = "IPv4 address for private vNIC configuration"
   type = "string"
 }
 
@@ -199,7 +180,7 @@ variable "random" {
   description = "Random String Generated"
 }
 
-#variable "dependsOn" {
-#  default = "true"
-#  description = "Boolean for dependency"
-#}
+variable "dependsOn" {
+  default = "true"
+  description = "Boolean for dependency"
+}
