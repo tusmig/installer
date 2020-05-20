@@ -196,19 +196,19 @@ zone_public=`echo -n $vlanid_public | sed 's/VLAN//Ig' | head -c 1`
 zone_private=`echo -n $vlanid_private | sed 's/VLAN//Ig' | head -c 1`
 
 
-routefile_public="$path_ifcfg/route-$network_interface_public"
-echo "10.10.70.0/24 via 10.$zone_public.$vpc.254" dev $network_interface_public > $routefile_public
-echo "10.1.$vpc.0/24 via 10.$zone_public.$vpc.254" dev $network_interface_public >> $routefile_public
-echo "10.2.$vpc.0/24 via 10.$zone_public.$vpc.254" dev $network_interface_public >> $routefile_public
-echo "10.3.$vpc.0/24 via 10.$zone_public.$vpc.254" dev $network_interface_public >> $routefile_public
-cat $routefile_public
+#routefile_public="$path_ifcfg/route-$network_interface_public"
+#echo "10.10.70.0/24 via 10.$zone_public.$vpc.254" dev $network_interface_public > $routefile_public
+#echo "10.1.$vpc.0/24 via 10.$zone_public.$vpc.254" dev $network_interface_public >> $routefile_public
+#echo "10.2.$vpc.0/24 via 10.$zone_public.$vpc.254" dev $network_interface_public >> $routefile_public
+#echo "10.3.$vpc.0/24 via 10.$zone_public.$vpc.254" dev $network_interface_public >> $routefile_public
+#cat $routefile_public
 
-#routefile_private="$path_ifcfg/route-$network_interface_private"
-#echo "10.10.70.0/24 via 10.$zone_private.$vpc.254" dev $network_interface_private > $routefile_private
-#echo "10.1.$vpc.0/24 via 10.$zone_private.$vpc.254" dev $network_interface_private >> $routefile_private
-#echo "10.2.$vpc.0/24 via 10.$zone_private.$vpc.254" dev $network_interface_private >> $routefile_private
-#echo "10.3.$vpc.0/24 via 10.$zone_private.$vpc.254" dev $network_interface_private >> $routefile_private
-#cat $routefile_private
+routefile_private="$path_ifcfg/route-$network_interface_private"
+echo "10.10.70.0/24 via 10.$zone_private.$vpc.254" dev $network_interface_private > $routefile_private
+echo "10.1.$vpc.0/24 via 10.$zone_private.$vpc.254" dev $network_interface_private >> $routefile_private
+echo "10.2.$vpc.0/24 via 10.$zone_private.$vpc.254" dev $network_interface_private >> $routefile_private
+echo "10.3.$vpc.0/24 via 10.$zone_private.$vpc.254" dev $network_interface_private >> $routefile_private
+cat $routefile_private
 
 systemctl restart network
 
