@@ -189,8 +189,15 @@ vlanid_private="$1"
 path_ifcfg="/etc/sysconfig/network-scripts"
 network_interface_private="ens256"
 
-vpc=`echo -n $vlanid_private | tail -c 1`
+temp_vpc=`echo -n $vlanid_private | tail -c 2`
 zone_private=`echo -n $vlanid_private | head -c 1`
+
+first_char="$(printf '%s' "$temp_vpc" | cut -c1)"
+if [ "$first_char" = 0 ]; then
+ vpc=`echo -n $vlanid_private | tail -c 1`
+else
+ vpc=`echo -n $vlanid_private | tail -c 2`
+fi
 
 
 routefile_private="$path_ifcfg/route-$network_interface_private"
